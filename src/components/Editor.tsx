@@ -1,6 +1,6 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { EditMathNode } from './MathNode';
 import Toolbar from './Toolbar';
 import { Node } from '@tiptap/core';
@@ -99,6 +99,8 @@ const MathEquation = Node.create({
 const Editor = () => {
   const [showMathInput, setShowMathInput] = useState(false);
 
+  const contentFromStorage = typeof window !== 'undefined' ? localStorage.getItem('editorContent') || '' : '';
+
   const editor = useEditor({
     extensions: [
       StarterKit, 
@@ -107,13 +109,21 @@ const Editor = () => {
       FontSize,
       HeadingFontSize, // Add the new extension
     ],
-    content: '',
+    content: contentFromStorage,
     editorProps: {
       attributes: {
         class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-[500px]',
       },
     },
   });
+
+  useEffect(() => {
+    if (!editor) return;
+    editor.on('update', ({ editor }) => {
+      const html = editor.getHTML();
+      localStorage.setItem('editorContent', html);
+    });
+  }, [editor]);
 
   const insertMathNode = useCallback((latex: string) => {
     if (editor) {

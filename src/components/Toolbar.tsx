@@ -30,6 +30,15 @@ const Toolbar = ({ editor }: ToolbarProps) => {
 
   const fontSizes = ['8px', '10px', '12px', '14px', '16px', '18px', '20px', '24px', '30px', '36px', '48px', '60px', '72px'];
   
+  const headingFontSizes = {
+    1: '32px',
+    2: '28px',
+    3: '24px',
+    4: '20px',
+    5: '16px',
+    6: '14px',
+  };
+
   // Handle font size application
   const handleFontSizeClick = (size: string) => {
     // Remove 'px' and convert to number for the editor command
@@ -106,7 +115,11 @@ const Toolbar = ({ editor }: ToolbarProps) => {
               <button
                 key={level}
                 onClick={() => {
-                  editor.chain().focus().toggleHeading({ level }).run();
+                  editor.chain()
+                    .focus()
+                    .toggleHeading({ level })
+                    .updateAttributes('heading', { fontSize: headingFontSizes[level] })
+                    .run();
                   setShowHeadingMenu(false);
                 }}
                 className={`w-full text-left px-3 py-1 hover:bg-gray-100 ${editor.isActive('heading', { level }) ? 'bg-gray-100' : ''}`}
@@ -216,6 +229,17 @@ const Toolbar = ({ editor }: ToolbarProps) => {
       >
         <Code size={18} />
       </button>
+      <div className="ml-auto flex items-center">
+        <button
+          onClick={() => {
+            // Replace with real docx export logic
+            alert('Export to Docx clicked');
+          }}
+          className="px-3 py-1 rounded hover:bg-gray-100 text-sm border border-gray-300"
+        >
+          Export Docx
+        </button>
+      </div>
     </div>
   );
 };

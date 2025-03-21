@@ -8,6 +8,7 @@ export const MathDisplay = ({ node, updateAttributes }) => {
   const [startSize, setStartSize] = useState(1);
 
   const handleMouseDown = (e) => {
+    e.preventDefault();
     setIsResizing(true);
     setStartX(e.clientX);
     setStartSize(node.attrs.size);
