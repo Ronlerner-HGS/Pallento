@@ -2,6 +2,7 @@ import React from 'react';
 import Editor from './components/Editor';
 import pallentoLogo from './assets/pallento-logo.svg';
 
+
 function App() {
   return (
     <div className="min-h-screen bg-gray-50">
